@@ -5,7 +5,7 @@ const expect = chai.expect;
 const mongoose = require('mongoose');
 require('sinon-mongoose');
 
-const Order = require('../order/Order');
+const Order = require('../src/order/Order');
 
 describe("Get all Orders", () => {
 

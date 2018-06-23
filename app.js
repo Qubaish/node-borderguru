@@ -1,15 +1,19 @@
-const express = require('express');
-const app = express();
-const db = require('./db');
+const express = require('express'),
+      app = express(),
+      db = require('./config/db'),
+      errorhandler = require('errorhandler'),
+      cors = require('cors');
 
-const OrderController = require('./order/OrderController');
+const OrderController = require('./src/order/OrderController');
+const CustomerController = require('./src/customer/CustomerController');
+const API = '/api';
 
-app.get('/', (req, res) => {
-  res.send("Welcome to border guru api")
-});
+app.use(errorhandler());
+app.use(cors());
 
-app.use('/orders', OrderController);
-
+app.get("/", (req, res) => res.json({message: "Welcome to Borderguru!"}));
+app.use(API + '/orders', OrderController);
+app.use(API + '/customers', CustomerController);
 
 app.response.error = function error(message) {
     this.json({
@@ -19,7 +23,6 @@ app.response.error = function error(message) {
         }
     });
 };
-
 app.response.success = function success(content) {
     this.json({
         status: {
@@ -29,5 +32,11 @@ app.response.success = function success(content) {
         data: content
     });
 };
+
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
 module.exports = app;

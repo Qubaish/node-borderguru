@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 const mongoose  = require("mongoose"),
-      Order     = require('../order/Order');
+      Order     = require('../src/order/Order');
 
 const chai        = require('chai'),
   chaiHttp        = require('chai-http'),
@@ -24,7 +24,7 @@ describe('Orders', () => {
     describe('/GET orders', () => {
       it('it should GET all the orders', (done) => {
         chai.request(server)
-            .get('/orders')
+            .get('/api/orders')
             .end((err, res) => {
               res.should.have.status(200);
               res.body.data.should.be.a('array');
@@ -38,7 +38,7 @@ describe('Orders', () => {
       it('it should not POST a order without customer name', (done) => {
          const { customerName, ...withoutCustomerName } = mockOrder;
            chai.request(server)
-           .post('/orders')
+           .post('/api/orders')
            .send(withoutCustomerName)
            .end((err, res) => {
                res.should.have.status(200);
@@ -52,7 +52,7 @@ describe('Orders', () => {
 
      it('it should POST a order', (done) => {
           chai.request(server)
-          .post('/orders')
+          .post('/api/orders')
           .send(mockOrder)
           .end((err, res) => {
               res.should.have.status(200);
@@ -74,7 +74,7 @@ describe('Orders', () => {
        let order = new Order(mockOrder);
        order.save((err, order) => {
            chai.request(server)
-           .get('/orders/' + order.id)
+           .get('/api/orders/' + order.id)
            .send(order)
            .end((err, res) => {
                res.should.have.status(200);
@@ -90,28 +90,20 @@ describe('Orders', () => {
          });
       });
 
-      // it('it should GET a order by the given customerName', (done) => {
-      //   let order = new Order(mockOrder);
-      //   order.save((err, order) => {
-      //       chai.request(server)
-      //       .get('/orders/customers/q')
-      //       .query({name: 'qubaish'})
-      //       .end((err, res) => {
-      //         console.log(err);
-      //         // console.log(res);
-      //           console.log(err);
-      //           res.should.have.status(200);
-      //           // res.body.should.be.a('object');
-      //           // res.body.data.should.have.property('customerName');
-      //           // res.body.data.should.have.property('customerAddress');
-      //           // res.body.data.should.have.property('itemName');
-      //           // res.body.data.should.have.property('price');
-      //           // res.body.data.should.have.property('currency');
-      //           // res.body.data.should.have.property('customerName').eql(order.customerName);
-      //         done();
-      //       });
-      //     });
-
+      it('it should GET a order by the given customerName', (done) => {
+        let order = new Order(mockOrder);
+        order.save((err, order) => {
+            chai.request(server)
+            .get('/api/orders/customers/q')
+            .query({name: 'Qubaish'})
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.data.should.be.a('array');
+                res.body.data.length.should.be.eql(1);
+              done();
+            });
+          });
+        });
    });
 
    describe('/PUT/:id order', () => {
@@ -119,7 +111,7 @@ describe('Orders', () => {
        let order = new Order(mockOrder);
        order.save((err, order) => {
                chai.request(server)
-               .put('/orders/' + order.id)
+               .put('/api/orders/' + order.id)
                .send({customerName: "Qubaish Pro", price: 300})
                .end((err, res) => {
                    res.should.have.status(200);
@@ -138,7 +130,7 @@ describe('Orders', () => {
        let order = new Order(mockOrder)
        order.save((err, order) => {
                chai.request(server)
-               .delete('/orders/' + order.id)
+               .delete('/api/orders/' + order.id)
                .end((err, res) => {
                    res.should.have.status(200);
                    res.body.should.be.a('object');

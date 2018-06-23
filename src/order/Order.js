@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const validate = require('mongoose-validator');
 const Schema = mongoose.Schema;
 
+const Customer = require('../customer/Customer');
+
 const currencyValidator = [
   validate({
     validator: 'isLength',
@@ -23,5 +25,22 @@ const OrderSchema = new Schema({
   currency: { type: String, required: true, validate: currencyValidator, uppercase: true }
 });
 
-mongoose.model('Order', OrderSchema);
-module.exports = mongoose.model('Order');
+OrderSchema.methods.createOrUpdateCustomer = async function(cusId){
+  let order = this;
+  if(cusId){
+    await Customer.addOrder(cusId, order._id);
+  }else{
+    await Customer.createCustomer(order);
+  }
+}
+//// After implementing customer design //////
+// OrderSchema.post('save', async function(order, next) {
+  // if(order.customerId){
+  //   const cus = await Customer.addOrder(order._id);
+  // }else{
+  //   await Customer.saveCustomer(order);
+  // }
+  // next();
+// });
+
+module.exports = mongoose.model('Order', OrderSchema);

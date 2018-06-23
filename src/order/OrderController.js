@@ -7,23 +7,16 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 const Order = require('./Order');
+const Customer = require('../customer/Customer');
 
 // CREATE ORDER
 router.post('/', (req, res) => {
-    let order = req.body;
-    console.log("=======")
-    console.log(order);
-    // Order.create({
-    //         customerName : order.customerName,
-    //         customerAddress : order.customerAddress,
-    //         price : order.price,
-    //         itemName: order.itemName,
-    //         currency: order.currency
-    //     },
-    //      (err, order) => {
-    //         if (err) return res.error(err.message);
-    //         res.status(200).success(order);
-    //     });
+    let {customerId = null, ...order} = req.body;
+    Order.create(order, async (err, order) => {
+      if (err) return res.error(err.message);
+      order.createOrUpdateCustomer(customerId);
+      res.status(200).success(order);
+    });
 });
 
 // UPDATE ORDER
