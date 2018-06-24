@@ -170,4 +170,46 @@ describe('Integration tests Orders', () => {
          });
      });
    });
+
+   describe('/GET Items', () => {
+     it('it should Get a list with all the item names and how many times they have been ordered', (done) => {
+       let order = new Order(mockOrder);
+       let order1 = new Order(mockOrder);
+       order.save((err, order) => {
+         order1.save((err, order1) => {
+               chai.request(server)
+               .get('/api/orders/items/ordered')
+               .end((err, res) => {
+                   res.should.have.status(200);
+                   res.body.should.be.a('object');
+                   res.body.data.should.be.a('array');
+                   res.body.data[0].should.have.property('total_ordered');
+                   res.body.data[0].should.have.property('total_ordered').eql(2);
+                 done();
+               });
+         });
+       });
+     });
+
+     it('it should Get a list with all the item names and sort their names alphabetically', (done) => {
+       let order = new Order(mockOrder);
+       mockOrder.itemName = "Apple";
+       let order1 = new Order(mockOrder);
+       order.save((err, order) => {
+         order1.save((err, order1) => {
+               chai.request(server)
+               .get('/api/orders/items/ordered')
+               .end((err, res) => {
+                   res.should.have.status(200);
+                   res.body.should.be.a('object');
+                   res.body.data.should.be.a('array');
+                   res.body.data[0]._id.should.have.property('itemName');
+                   res.body.data[0]._id.should.have.property('itemName').eq("Apple");
+                   res.body.data[1]._id.should.have.property('itemName').eq("Macbook");
+                 done();
+               });
+         });
+       });
+     });
+   });
 });

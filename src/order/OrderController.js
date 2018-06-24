@@ -58,7 +58,19 @@ router.get('/customers/q', customerFilters, (req, res, next) => {
 router.delete('/:id', (req, res) => {
     Order.findByIdAndRemove(req.params.id, (err, order) => {
         if (err) return res.error("There was a problem deleting the order.");
+        if(!order) return res.error("No Order Found");
+        req.body.customerId && order.deleteOrderFromCustomer(req.body.customerId);
         res.status(200).success("Order successfully deleted!");
+    });
+});
+
+router.get('/items/ordered', (req, res, next) => {
+  Order.aggregate([
+    { $group: { _id: {itemName: "$itemName"}, total_ordered: { $sum: 1 } } },
+    { $sort: {total_ordered: -1, '_id.itemName': 1} }
+    ], (err, result) =>{
+      if(err) return res.error(err.message)
+      res.status(200).success(result);
     });
 });
 

@@ -28,4 +28,8 @@ CustomerSchema.statics.addOrder = function(cusId, orderID){
   return this.update({_id: cusId}, {$push: {orders: orderID}});
 }
 
+CustomerSchema.statics.deleteOrder = function(cusId, orderID){
+  return this.update({_id: cusId}, { $pullAll: {orders: [orderID] } });
+}
+
 module.exports = mongoose.model('Customer', CustomerSchema);

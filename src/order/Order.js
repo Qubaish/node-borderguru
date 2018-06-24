@@ -33,6 +33,11 @@ OrderSchema.methods.createOrUpdateCustomer = async function(cusId){
     await Customer.createCustomer(order);
   }
 }
+
+OrderSchema.methods.deleteOrderFromCustomer = async function(cusId){
+  return await Customer.deleteOrder(cusId, this._id);
+}
+
 //// After implementing customer design //////
 // OrderSchema.post('save', async function(order, next) {
   // if(order.customerId){
