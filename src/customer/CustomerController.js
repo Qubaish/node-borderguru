@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', (req, res) => {
     Customer.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true }, (err, customer) => {
-        if (err) return res.error("There was a problem updating the customer.");
+        if (err) return res.error(err.message);
         if(!customer) return res.error("Customer not found");
         res.status(200).success(customer);
     });
@@ -52,12 +52,6 @@ router.get('/:id/orders', (req, res) => {
     });
 });
 
-
-router.get('/chacha/two/:id', async (req, res) => {
-    const cus = await Customer.getCustomer(req.params.id);
-    res.send(cus);
-});
-
 router.get('/:id/total-amount', (req, res) => {
   let id = [mongoose.Types.ObjectId(req.params.id)];
   Customer.aggregate([
@@ -66,20 +60,38 @@ router.get('/:id/total-amount', (req, res) => {
       "from":"orders",
       "localField":"orders",
       "foreignField":"_id",
-      "as":"lookup-data"
+      "as":"order"
     }},
     {"$addFields":{
       "totalAmount":{
-        "$sum":"$lookup-data.price"
+        "$sum":"$order.price"
       }
     }},
-    {"$project":{"lookup-data":0, "_id": 0, "orders": 0}}
+    {"$project":{"order":0, "_id": 0, "orders": 0, "__v": 0}}
   ], (err, result)  => {
        if (err) return res.error(err)
        res.status(200).success(result);
    });
 });
 
-
+router.get('/:item/all', (req, res) => {
+  Customer.aggregate([
+    {"$lookup":{
+      "from":"orders",
+      "localField":"orders",
+      "foreignField":"_id",
+      "as":"order"
+    }},
+    {"$unwind":"$orders"},
+    {"$match":{
+      "order.itemName" : req.params.item
+    }},
+    {"$group": {_id: null, customers: {$addToSet: {customerName: "$customerName", customerAddress: "$customerAddress"}}}},
+    {"$project":{"order":0, "_id": 0, "orders": 0}}
+  ], (err, result)  => {
+       if (err) return res.error(err)
+       res.status(200).success(result);
+   });
+})
 
 module.exports = router;

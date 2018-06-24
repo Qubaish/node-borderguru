@@ -14,7 +14,7 @@ chai.use(chaiMiddleware);
 
 let mockOrder = {customerName: 'Qubaish', customerAddress: 'Dubai hala Dubai', itemName: 'Macbook', price: 400, currency: 'EUR' };
 
-describe('Orders', () => {
+describe('Integration tests Orders', () => {
     beforeEach((done) => {
         Order.remove({}, (err) => {
            done();
@@ -90,7 +90,7 @@ describe('Orders', () => {
          });
       });
 
-      it('it should GET a order by the given customerName', (done) => {
+      it('it should GET a orders by the given Customer Name', (done) => {
         let order = new Order(mockOrder);
         order.save((err, order) => {
             chai.request(server)
@@ -104,6 +104,36 @@ describe('Orders', () => {
             });
           });
         });
+
+      it('it should GET a orders by the given Customer Address', (done) => {
+        let order = new Order(mockOrder);
+        order.save((err, order) => {
+            chai.request(server)
+            .get('/api/orders/customers/q')
+            .query({address: 'Dubai hala Dubai'})
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.data.should.be.a('array');
+                res.body.data.length.should.be.eql(1);
+              done();
+            });
+          });
+        });
+
+      it('it should GET a error when no filters is provided', (done) => {
+        let order = new Order(mockOrder);
+        order.save((err, order) => {
+            chai.request(server)
+            .get('/api/orders/customers/q')
+            .query({})
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.status.code.should.be.eql(1);
+                res.body.status.should.have.property('error').eql("Empty Filters");
+              done();
+          });
+        });
+      });
    });
 
    describe('/PUT/:id order', () => {

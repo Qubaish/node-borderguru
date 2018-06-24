@@ -1,0 +1,9 @@
+{"_id":{"$oid":"5b2eca12a3c1c315767f427e"},"customerName":"user 1","currency":"EUR","price":10,"customerAddress":"Dso dubai","itemName":"macbook","__v":0}
+{"_id":{"$oid":"5b2eca5ca3c1c315767f4280"},"customerName":"Peter Lustig","currency":"EUR","price":1700,"customerAddress":"Steindamm 80","itemName":"Macbook","__v":0}
+{"_id":{"$oid":"5b2ecb1ca3c1c315767f4282"},"customerName":"Peter Lustig","currency":"EUR","price":10,"customerAddress":"Steindamm 80","itemName":"Book \"Cooking 101\"","__v":0}
+{"_id":{"$oid":"5b2ecb44a3c1c315767f4283"},"customerName":"Peter Lustig","currency":"EUR","price":75,"customerAddress":"Steindamm 80","itemName":"Inline Skates","__v":0}
+{"_id":{"$oid":"5b2ecb4da3c1c315767f4284"},"customerName":"Peter Lustig","currency":"EUR","price":75,"customerAddress":"Steindamm 80","itemName":"Inline Skates","__v":0}
+{"_id":{"$oid":"5b2ecb97a3c1c315767f4285"},"customerName":"John Smith","currency":"EUR","price":1700,"customerAddress":"Reeperbahn 153","itemName":"Macbook","__v":0}
+{"_id":{"$oid":"5b2ecbb9a3c1c315767f4287"},"customerName":"John Smith","currency":"US","price":2000,"customerAddress":"Reeperbahn 153","itemName":"Flux compensator","__v":0}
+{"_id":{"$oid":"5b2ecc03a3c1c315767f4288"},"customerName":"Ted Justice","currency":"EUR","price":20,"customerAddress":"Lagerstrasse 11","itemName":"Book \"Guide to Hamburg\"","__v":0}
+{"_id":{"$oid":"5b2ecc22a3c1c315767f428a"},"customerName":"Ted Justice","currency":"EUR","price":270,"customerAddress":"Lagerstrasse 11","itemName":"Playstation 4","__v":0}
