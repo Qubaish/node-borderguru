@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 const Customer = require('./Customer');
 const Order = require('../order/Order');
 
-
+// GET ALL CUSTOMERS
 router.get('/', (req, res) => {
     Customer.find({}, (err, customers) =>{
         if (err) return res.status(500).send("There was a problem finding the customers.");
@@ -29,6 +29,7 @@ router.get('/:id', async (req, res) => {
     res.status(200).success(customer);
 });
 
+//UPDATE CUSTOMER
 router.put('/:id', (req, res) => {
     Customer.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true }, (err, customer) => {
         if (err) return res.error(err.message);
@@ -37,6 +38,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
+// DELETE CUSTOMER
 router.delete('/:id', (req, res) => {
     Customer.findByIdAndRemove(req.params.id, (err, customer) => {
         if (err) return res.error("There was a problem deleting the customer.");
@@ -44,6 +46,7 @@ router.delete('/:id', (req, res) => {
     });
 });
 
+// GET ALL ORDERS BOUGHT BY CUSTOMER
 router.get('/:id/orders', (req, res) => {
     Customer.findOne({_id: req.params.id}).populate({path: 'orders'}).exec( (err, customer) => {
         if (err) return res.error(err.message);
@@ -52,6 +55,7 @@ router.get('/:id/orders', (req, res) => {
     });
 });
 
+// GET AMOUNT MONEY PAID BY CUSTOMER
 router.get('/:id/total-amount', (req, res) => {
   let id = [mongoose.Types.ObjectId(req.params.id)];
   Customer.aggregate([
@@ -74,6 +78,7 @@ router.get('/:id/total-amount', (req, res) => {
    });
 });
 
+// GET ALL CUSTOMERS BOUGHT CERTAIN ITEM
 router.get('/:item/all', (req, res) => {
   Customer.aggregate([
     {"$lookup":{

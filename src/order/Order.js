@@ -27,11 +27,8 @@ const OrderSchema = new Schema({
 
 OrderSchema.methods.createOrUpdateCustomer = async function(cusId){
   let order = this;
-  if(cusId){
-    await Customer.addOrder(cusId, order._id);
-  }else{
-    await Customer.createCustomer(order);
-  }
+  let customer = cusId ? await Customer.addOrder(cusId, order._id) : await Customer.createCustomer(order);
+  return customer;
 }
 
 OrderSchema.methods.deleteOrderFromCustomer = async function(cusId){

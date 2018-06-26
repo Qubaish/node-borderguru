@@ -64,6 +64,7 @@ router.delete('/:id', (req, res) => {
     });
 });
 
+// GET ALL ITEMS HOW MANY TIME THEY HAVE BEEN ORDERED AND SORT THEM
 router.get('/items/ordered', (req, res, next) => {
   Order.aggregate([
     { $group: { _id: {itemName: "$itemName"}, total_ordered: { $sum: 1 } } },

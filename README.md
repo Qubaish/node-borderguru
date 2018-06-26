@@ -15,18 +15,18 @@ In the root of the app:
 
 # Orders API
 
-* 1) GET http://localhost:3000/api/orders/customers/q?name=
-* 2) GET http://localhost:3000/api/orders/customers/q?address=
-* 3) POST http://localhost:3000/api/orders {post params}
-* 4) PUT http://localhost:3000/api/orders/:id {post params}
-* 5) DELETE  http://localhost:3000/api/orders/:id
-* 6) GET http://localhost:3000/api/orders/items/ordered
+* GET /api/orders/customers/q?name=
+* GET /api/orders/customers/q?address=
+* POST /api/orders {post params}
+* PUT /api/orders/:id {post params}
+* DELETE /api/orders/:id
+* GET /api/orders/items/ordered
 
 # Customers API
 
-1) GET http://localhost:3000/api/customers/:id
-2) PUT http://localhost:3000/api/customers/:id
-3) DELETE http://localhost:3000/api/customers/:id
-4) GET http://localhost:3000/api/customers/:id/orders
-5) GET http://localhost:3000/api/customers/:id/total-amount
-6) GET http://localhost:3000/api/customers/:item/all
+* GET /api/customers/:id
+* PUT /api/customers/:id
+* DELETE /customers/:id
+* GET /api/customers/:id/orders
+* GET /api/customers/:id/total-amount
+* GET /api/customers/:item/all
