@@ -12,7 +12,6 @@ app.use(errorhandler());
 app.use(cors());
 
 app.get("/", (req, res) => res.json({message: "Welcome to Borderguru!"}));
-// app.get("/api-doc", (req, res) => res.json({message: "Welcome to Borderguru!"}));
 
 app.use('/api-doc', express.static(__dirname + '/doc/apiDoc'));
 app.use(API + '/orders', OrderController);
@@ -39,7 +38,9 @@ app.response.success = function success(content) {
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
-  next(err);
+  res.json({'errors': {
+    message: err.message
+  }});
 });
 
 module.exports = app;
