@@ -94,7 +94,7 @@
    *
    * @apiDescription This function has same errors like POST /order
    *
-   * @apiParam {String} customerId Customer ID Optional.
+   * @apiParam {String} customerId Customer ID Optional (If you want to add order to exisiting customer)-.
    * @apiParam {String} customerName Customer Name Required.
    * @apiParam {String} customerAddress Customer Address Required.
    * @apiParam {String} itemName Order Item Name Required.
@@ -153,6 +153,7 @@
    * @apiGroup Order
    *
    * @apiParam {id} id Order unique ID.
+   * @apiParam {String} customerId customer unique ID optional(If you want to delete order from existing customer).
    * @apiUse SuccessParams
    * @apiSuccess {String} data Order with Success Message.
    * @apiUse ErrorResponse
