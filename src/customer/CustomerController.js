@@ -34,7 +34,7 @@ router.put('/:id', (req, res) => {
     Customer.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true }, (err, customer) => {
         if (err) return res.error(err.message);
         if(!customer) return res.error("Customer not found");
-        res.status(200).success(customer);
+        res.status(200).success({customerId: customer._id});
     });
 });
 
@@ -56,7 +56,7 @@ router.get('/:id/orders', (req, res) => {
 });
 
 // GET AMOUNT MONEY PAID BY CUSTOMER
-router.get('/:id/total-amount', (req, res) => {
+router.get('/:id/amount-paid', (req, res) => {
   let id = [mongoose.Types.ObjectId(req.params.id)];
   Customer.aggregate([
     { "$match": { "_id": { "$in": id} } },
@@ -67,7 +67,7 @@ router.get('/:id/total-amount', (req, res) => {
       "as":"order"
     }},
     {"$addFields":{
-      "totalAmount":{
+      "amountPaid":{
         "$sum":"$order.price"
       }
     }},
@@ -97,6 +97,6 @@ router.get('/:item/all', (req, res) => {
        if (err) return res.error(err)
        res.status(200).success(result);
    });
-})
+});
 
 module.exports = router;

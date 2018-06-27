@@ -12,6 +12,9 @@ app.use(errorhandler());
 app.use(cors());
 
 app.get("/", (req, res) => res.json({message: "Welcome to Borderguru!"}));
+// app.get("/api-doc", (req, res) => res.json({message: "Welcome to Borderguru!"}));
+
+app.use('/api-doc', express.static(__dirname + '/doc/apiDoc'));
 app.use(API + '/orders', OrderController);
 app.use(API + '/customers', CustomerController);
 

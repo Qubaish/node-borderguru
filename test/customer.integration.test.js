@@ -73,13 +73,13 @@ describe('Integration tests Customers', () => {
             let customer = new Customer(Object.assign({orders: [order._id]}, mockCustomer));
             customer.save((err, customer) => {
                 chai.request(server)
-                .get(`/api/customers/${customer.id}/total-amount`)
+                .get(`/api/customers/${customer.id}/amount-paid`)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
                     res.body.data.should.be.a('array');
-                    res.body.data[0].should.have.property('totalAmount');
-                    res.body.data[0].should.have.property('totalAmount').eql(400);
+                    res.body.data[0].should.have.property('amountPaid');
+                    res.body.data[0].should.have.property('amountPaid').eql(400);
                   done();
                 });
               });
@@ -119,7 +119,7 @@ describe('Integration tests Customers', () => {
                     res.body.should.be.a('object');
                     res.body.status.code.should.be.eql(0);
                     res.body.status.should.have.property('message').eql("OK");
-                    res.body.data.should.have.property('email').eql("geek@coding.com");
+                    res.body.data.should.have.property('customerId');
                   done();
                 });
           });

@@ -6,7 +6,7 @@ const customerFilter = (req, res, next) => {
     ...("address" in req.query ? [{customerAddress: req.query.address}] : [])
   ]
   req.filters = filters;
-  next()
+  next();
 }
 
 module.exports = customerFilter;

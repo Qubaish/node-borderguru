@@ -15,7 +15,7 @@ router.post('/', (req, res) => {
     Order.create(order, async (err, order) => {
       if (err) return res.error(err.message);
       order.createOrUpdateCustomer(customerId);
-      res.status(200).success(order);
+      res.status(200).success({orderId: order._id});
     });
 });
 
@@ -24,7 +24,7 @@ router.put('/:id', (req, res) => {
     Order.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true }, (err, order) => {
         if (err) return res.error("There was a problem updating the order.");
         if(!order) return res.error("Order not found");
-        res.status(200).success(order);
+        res.status(200).success({orderId: order._id});
     });
 });
 
@@ -65,10 +65,10 @@ router.delete('/:id', (req, res) => {
 });
 
 // GET ALL ITEMS HOW MANY TIME THEY HAVE BEEN ORDERED AND SORT THEM
-router.get('/items/ordered', (req, res, next) => {
+router.get('/items/top-selling', (req, res, next) => {
   Order.aggregate([
-    { $group: { _id: {itemName: "$itemName"}, total_ordered: { $sum: 1 } } },
-    { $sort: {total_ordered: -1, '_id.itemName': 1} }
+    { $group: { _id: "$itemName", total_ordered: { $sum: 1 } } },
+    { $sort: {total_ordered: -1, '_id': 1} }
     ], (err, result) =>{
       if(err) return res.error(err.message)
       res.status(200).success(result);

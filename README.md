@@ -13,6 +13,12 @@ In the root of the app:
 
 * npm test
 
+# API Documentation
+
+* apidoc -i doc/api -o doc/apiDoc/
+* http://localhost:3000/api-doc
+
+
 # Orders API
 
 * GET /api/orders/customers/q?name=
@@ -20,7 +26,7 @@ In the root of the app:
 * POST /api/orders {post params}
 * PUT /api/orders/:id {post params}
 * DELETE /api/orders/:id
-* GET /api/orders/items/ordered
+* GET /api/orders/items/top-selling
 
 # Customers API
 
@@ -28,5 +34,5 @@ In the root of the app:
 * PUT /api/customers/:id
 * DELETE /customers/:id
 * GET /api/customers/:id/orders
-* GET /api/customers/:id/total-amount
+* GET /api/customers/:id/amount-paid
 * GET /api/customers/:item/all

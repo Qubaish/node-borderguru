@@ -59,11 +59,7 @@ describe('Integration tests Orders', () => {
               res.body.should.be.a('object');
               res.body.status.code.should.be.eql(0);
               res.body.status.should.have.property('message').eql("OK");
-              res.body.data.should.have.property('customerName');
-              res.body.data.should.have.property('customerAddress');
-              res.body.data.should.have.property('itemName');
-              res.body.data.should.have.property('price');
-              res.body.data.should.have.property('currency');
+              res.body.data.should.have.property('orderId');
             done();
           });
       });
@@ -148,7 +144,6 @@ describe('Integration tests Orders', () => {
                    res.body.should.be.a('object');
                    res.body.status.code.should.be.eql(0);
                    res.body.status.should.have.property('message').eql("OK");
-                   res.body.data.should.have.property('price').eql(300);
                  done();
                });
          });
@@ -178,12 +173,12 @@ describe('Integration tests Orders', () => {
        order.save((err, order) => {
          order1.save((err, order1) => {
                chai.request(server)
-               .get('/api/orders/items/ordered')
+               .get('/api/orders/items/top-selling')
                .end((err, res) => {
                    res.should.have.status(200);
                    res.body.should.be.a('object');
                    res.body.data.should.be.a('array');
-                   res.body.data[0].should.have.property('total_ordered');
+                   res.body.data[0].should.have.property('_id');
                    res.body.data[0].should.have.property('total_ordered').eql(2);
                  done();
                });
@@ -198,14 +193,14 @@ describe('Integration tests Orders', () => {
        order.save((err, order) => {
          order1.save((err, order1) => {
                chai.request(server)
-               .get('/api/orders/items/ordered')
+               .get('/api/orders/items/top-selling')
                .end((err, res) => {
                    res.should.have.status(200);
                    res.body.should.be.a('object');
                    res.body.data.should.be.a('array');
-                   res.body.data[0]._id.should.have.property('itemName');
-                   res.body.data[0]._id.should.have.property('itemName').eq("Apple");
-                   res.body.data[1]._id.should.have.property('itemName').eq("Macbook");
+                   res.body.data[0].should.have.property('_id');
+                   res.body.data[0].should.have.property('_id').eq("Apple");
+                   res.body.data[1].should.have.property('_id').eq("Macbook");
                  done();
                });
          });
